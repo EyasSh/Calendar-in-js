@@ -1,0 +1,318 @@
+<html>
+    <head>
+        <title>
+            Calendar
+        </title>
+        <style>
+          /*the main container that contains the 2 tables one for the buttons and the month 
+          and another
+          for the days of the week */
+            .container
+            {
+                background-color: #13448d;
+                width: 400px;
+                height: 350px;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                position: absolute;
+                box-shadow: 10px 10px 5px rgb(0, 0, 0);
+                color: rgb(255, 255, 255);
+                font-family: cursive;
+                
+                
+            }
+            .year
+            {
+                background-color:#13448d;
+                font-family: cursive;
+                color: white;
+                font-size: 25px;
+                grid-area: b;                 
+                text-align: center;               
+            }
+            body
+            {
+                background-color: #5393f1;
+            }
+            .t1
+            {
+                border:none;
+                background-color: transparent;
+                width: 300px;
+                height: 50px;
+                color: rgb(255, 255, 255);
+                font-family: cursive;
+                position:absolute;
+                top: 15%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                
+               
+
+            }
+            .t2
+            { border:none;
+                background-color: transparent;
+                width: 400px;
+                height: 50px;
+                color: rgb(255, 255, 255);
+                font-family: cursive;
+                position:absolute;
+                top: 48%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+               }
+           
+          .prev /*previous month button*/
+          {
+              background-color: transparent;
+              color:white;
+              font-family: cursive;
+              font-weight: bolder;
+              border:none;
+          }
+          .Next /*next month button*/
+          {
+            background-color: transparent;
+              color: white;
+              font-family: cursive;
+              font-weight: bolder;
+              border:none;
+          }
+          /* previous year and next year button code below */
+          .py 
+          {
+              background-color: #13448d;
+            color:white;
+              font-family: cursive;
+              font-weight: bolder;
+              border:none;
+              grid-area: a;
+                
+          }
+          .ny
+          {
+            background-color: #13448d;
+            color:white;
+              font-family: cursive;
+              font-weight: bolder;
+              border:none;
+              grid-area: c;
+             
+          }
+          /* year container */
+          .yearCon
+          {
+            position:absolute;
+            top: 0%;
+            width:100%;
+            height: 10vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 5vh;
+            grid-template-areas: 'a b c';
+          }
+         
+          .prev:hover
+          {
+            background-color: rgba(255, 255, 255, 0.377);
+            cursor: pointer;
+            
+          }
+          .Next:hover
+          {
+              background-color: rgba(255, 255, 255, 0.377);
+              cursor: pointer;
+          }
+          .py:hover
+          {
+            background-color: rgba(255, 255, 255, 0.377);
+            cursor: pointer;
+          }
+          .ny:hover
+          {
+            background-color: rgba(255, 255, 255, 0.377);
+            cursor: pointer;
+          }         
+            
+        </style>
+    </head>
+    <body>
+        <script>
+        var d=new Date(2021,4,14,1,0,0,0); /*a date type object dated to the 14th of may (my b-day)*/
+        var monthInReal=d.getMonth()+1; /*this represents the month in its actual number because
+        months in js are represented from 0-11*/
+        var year=d.getFullYear(); /*this function is a default for this object it returns
+        a 4 degit intiger of the year*/
+       
+        document.write("<div class='container'>");
+          document.write("<div class='yearCon'>");
+          document.write("<button class='py'>Previous Year</button>");
+        document.write("<div class='year'>",year,"</div>");
+        document.write("<button class='ny'>Next Year</button>");
+        document.write('</div>');
+           document.write("<table class='t1'>");
+               document.write("<tr aria-colspan='7'><td><button  class='prev'>Previous Month</button></td><th class='Month'>",monthInReal,"</th><td><button class='Next'>Next Month</button></td></tr>");
+               document.write("</table>");
+               document.write("<table class='t2'>");
+               document.write("<tr ><td>Sun </td><td> Mon </td><td> Tue </td><td> Wed </td><td> Thur </td><td> Fri </td><td> Sat </td></tr>");
+                 filler();
+                 putDateInDay(d.getMonth()+1,d.getFullYear());
+
+          document.write( "</table>");
+       
+       document.write( "</div>");
+       /*that function prints out the previous month and calls another function
+       (putDateInDay()) which in turn sorts out the dates of the month to match them up with the actual day
+       for example 20/nov/2021 is a saturday this function insures that the 20th of the month is placed
+       in the saturday column */
+       document.querySelector('.prev').addEventListener('click',function() 
+       {
+           if (monthInReal==1){
+               
+               monthInReal=12;
+              
+               
+              year-=1;
+              
+              document.querySelector('.year').innerHTML=year;
+           }
+           else if(monthInReal>1 )
+           {
+               monthInReal-=1;
+              
+              
+           }  
+           d.setFullYear(year);
+           d.setMonth(monthInReal);
+           putDateInDay(d.getMonth(),d.getFullYear());
+           document.querySelector('.Month').innerHTML=monthInReal;
+
+       })
+       /*the function below adds 1 to the month and in case it was december it ups the year by one and it calls the putDateInDay 
+       function to update the table of days*/
+       document.querySelector('.Next').addEventListener('click',function()
+       {
+           if (monthInReal==12)
+           {
+            monthInReal=1;
+              
+              
+             year+=1;
+             
+             document.querySelector('.year').innerHTML=year;
+           }
+           else if(monthInReal<12)
+           {
+               monthInReal++;
+               
+           }
+           d.setMonth(monthInReal);
+           putDateInDay(d.getMonth(),d.getFullYear());
+           document.querySelector('.Month').innerHTML=monthInReal;
+       })
+       /*a function that subtracts the year by 1 and updates the table accordingly*/
+       document.querySelector('.py').addEventListener('click',function()
+       {
+         year-=1;
+         d.setFullYear(year);
+        
+         document.querySelector('.year').innerHTML=year;
+         
+         putDateInDay(d.getMonth(),d.getFullYear());
+       })
+       /*a function that adds 1 to the year  and updates the table accordingly*/
+       document.querySelector('.ny').addEventListener('click',function()
+       {
+         year+=1;
+         d.setUTCFullYear(year);
+         
+         document.querySelector('.year').innerHTML=year;
+         clear();
+         putDateInDay(d.getMonth(),d.getFullYear());
+       })
+       function filler()
+       {
+         for (let index = 0; index < 6; index++) {
+           
+           document.querySelector('.t2').innerHTML+="<tr class='week'><td class='sunday' id='d'><td id='d' class='monday' ><td id='d' class='tuesday'><td id='d' class='wednesday'><td id='d' class='thursday'><td id='d' class='friday'><td id='d' class='saturday'></td></tr>";
+         }
+       }
+       /*a function that puts the days of the month in the correct day column*/
+       function putDateInDay(months,years)
+       {
+          let s =new Date(years,months,0);
+         let e= s.getDate();
+         let z=s;
+        
+         let week=document.querySelectorAll(`.week:nth-child(1)`)
+         let day=document.querySelectorAll('#d')
+         let doBreak = false
+            for (let i = 0; i < 6; ) 
+            {
+              if (doBreak) {
+                break;
+              }
+              for (let j = 1; j <= e; j++) 
+              {
+               if(week[i]!=null)
+               {
+                z.setDate(j)
+                switch (z.getDay(j)) 
+                {
+                  case 0:
+                    week[i].querySelector('.sunday').innerHTML=j;
+                    break;
+                    case 1:
+                    week[i].querySelector('.monday').innerHTML=j;
+                    break;
+                    case 2:
+                    week[i].querySelector('.tuesday').innerHTML=j;
+                    break;
+                    case 3:
+                      week[i].querySelector('.wednesday').innerHTML=j;
+                    break;
+                    case 4:
+                    week[i].querySelector('.thursday').innerHTML=j;
+                    break;
+                    case 5:
+                    week[i].querySelector('.friday').innerHTML=j;
+                    break;
+                    case 6:
+                    week[i].querySelector('.saturday').innerHTML=j;
+                    break;
+                
+                  default:
+                    break;
+                }
+               }
+                if(z.getDay(j)==6)
+                {
+                  i++;
+                }
+                doBreak = j == e
+              }
+             
+              
+            }
+            
+            
+            
+           
+           
+            
+           
+        }
+       
+       function clear()
+       {
+         let arr=document.querySelectorAll('#d');
+         for (let index = 0; index < arr.length; index++) {
+           
+           arr[index].innerHTML='';
+         }
+       }
+    </script>
+    </body>
+</html>
